@@ -1,0 +1,81 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "citediscord-net"
+version = "1.0.0"
+description = "A Hybrid Deep-Generative Framework for RNA-Protein Discordance Discovery in CITE-seq Data"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Bhavanam Rajendra Reddy"},
+    {name = "Boddu Saran", email = "saran.boddu777@gmail.com"},
+    {name = "Muthuraman Ramanathan"},
+    {name = "Palakurthi K-S-S-Srihari Likith"},
+]
+keywords = [
+    "CITE-seq",
+    "single-cell",
+    "multi-omics",
+    "variational-autoencoder",
+    "cross-modal-attention",
+    "graph-attention-network",
+    "discordance-analysis",
+    "protein-language-model",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "torch>=2.0",
+    "torchvision",
+    "torchaudio",
+    "transformers>=4.30",
+    "accelerate",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "pandas>=2.0",
+    "scikit-learn>=1.3",
+    "matplotlib>=3.7",
+    "seaborn>=0.12",
+    "plotly>=5.0",
+    "kaleido",
+    "tqdm",
+    "pyyaml",
+    "requests",
+    "h5py",
+    "anndata>=0.9",
+    "scanpy>=1.9",
+    "muon>=0.1",
+    "leidenalg",
+    "igraph",
+    "umap-learn>=0.5",
+    "statsmodels>=0.14",
+    "networkx>=3.0",
+]
+
+[project.optional-dependencies]
+latex = ["pylatex", "Jinja2", "tabulate"]
+dev = ["pytest", "ruff", "mypy"]
+
+[project.urls]
+Homepage = "https://github.com/Runtime-Slayers/CITEDiscord-Net"
+Repository = "https://github.com/Runtime-Slayers/CITEDiscord-Net"
+Issues = "https://github.com/Runtime-Slayers/CITEDiscord-Net/issues"
+
+[project.scripts]
+citediscord = "main:main"
+
+[tool.setuptools.packages.find]
+include = ["src*"]

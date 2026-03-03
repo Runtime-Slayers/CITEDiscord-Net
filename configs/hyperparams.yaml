@@ -1,0 +1,136 @@
+# =============================================================================
+# Project 09 — CITEDiscord-Net: Multi-Modal CITE-seq Discordance Network
+# Hyperparameter Configuration
+# =============================================================================
+
+project_name: "CITEDiscord-Net"
+seed: 42
+device: "auto"          # auto | cpu | cuda | mps
+
+# ---------------------------------------------------------------------------
+# Data
+# ---------------------------------------------------------------------------
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  augmented_dir: "data/augmented"
+  pbmc_url: "https://cf.10xgenomics.com/samples/cell-exp/3.0.0/pbmc_10k_protein_v3/pbmc_10k_protein_v3_filtered_feature_bc_matrix.h5"
+  cellphonedb_url: "https://raw.githubusercontent.com/Teichlab/cellphonedb-data/master/data/interaction_input.csv"
+
+  # QC thresholds
+  min_genes_per_cell: 200
+  max_genes_per_cell: 6000
+  max_mito_fraction: 0.20
+  min_cells_per_gene: 10
+
+  # Feature selection
+  n_highly_variable_genes: 2000
+  n_pca_components: 50
+
+  # Augmentation
+  n_augmented_cells: 3000
+  augmentation_noise_std: 0.05
+
+# ---------------------------------------------------------------------------
+# Multi-Modal VAE (MVAE) — Product-of-Experts + CMAT + MoG + InfoNCE
+# ---------------------------------------------------------------------------
+mvae:
+  rna_input_dim: 2000          # HVG count
+  adt_input_dim: 17            # protein panel size (auto-detected)
+  latent_dim: 32
+  rna_hidden_dims: [512, 256]
+  adt_hidden_dims: [64, 64]
+  decoder_hidden_dims: [256, 512]
+  beta: 4.0                    # beta-VAE weight (KL divergence scaling)
+  dropout: 0.1
+  batch_norm: true
+
+  # ── Novel: Cross-Modal Attention Transformer (CMAT) ──────────
+  cmat:
+    enabled: true              # toggle CMAT on/off
+    n_heads: 4                 # number of attention heads (auto-adjusted)
+
+  # ── Novel: Mixture-of-Gaussians (MoG) Prior ───────────────
+  use_mog_prior: true          # if false, standard N(0,I) prior is used
+  mog_components: 10           # K Gaussian components (matches expected clusters)
+
+  # ── Novel: InfoNCE Contrastive Loss ──────────────────────
+  lambda_nce: 0.1              # weight of InfoNCE term in total loss
+  infonce_temperature: 0.07    # softmax temperature τ
+  proj_dim: 64                 # projection head output dimension
+
+  # Training
+  lr: 0.001
+  weight_decay: 1.0e-5
+  batch_size: 512
+  n_epochs: 80
+  warmup_epochs: 10
+  scheduler: "cosine"
+  grad_clip: 1.0
+
+# ---------------------------------------------------------------------------
+# Conditional VAE (CVAE) — Protein Prediction from RNA
+# ---------------------------------------------------------------------------
+cvae:
+  latent_dim: 32
+  condition_dim: 32            # RNA latent z size
+  esm_embed_dim: 320           # ESM-2 (8M param model) embedding dim
+  use_esm_features: true
+  hidden_dims: [128, 128]
+  dropout: 0.1
+
+  lr: 5.0e-4
+  batch_size: 256
+  n_epochs: 60
+
+# ---------------------------------------------------------------------------
+# ESM-2 LLM Protein Embeddings
+# ---------------------------------------------------------------------------
+llm:
+  model_name: "facebook/esm2_t6_8M_UR50D"   # 8M param, fast
+  max_length: 512
+  batch_size: 8
+  cache_dir: "data/processed/esm2_cache"
+
+# ---------------------------------------------------------------------------
+# Discordance Analysis
+# ---------------------------------------------------------------------------
+discordance:
+  n_permutations: 1000
+  alpha: 0.05                  # significance threshold
+  min_corr_cells: 20           # min cells per cluster for testing
+
+# ---------------------------------------------------------------------------
+# Cell Communication
+# ---------------------------------------------------------------------------
+cell_communication:
+  min_expr_fraction: 0.1       # min fraction of cells expressing ligand/receptor
+  n_bootstrap: 500
+  expr_threshold_percentile: 10
+
+  # ── Novel: GAT-Enhanced Communication ─────────────────
+  gat:
+    enabled: true              # use GAT refinement (falls back to classical if fails)
+    k_neighbors: 15            # k-NN graph connectivity on MVAE latent
+    hid_dim: 16                # GAT hidden dimension per head
+    out_dim: 32                # GAT output embedding dimension
+    n_heads: 4                 # number of GAT attention heads
+
+# ---------------------------------------------------------------------------
+# Clustering
+# ---------------------------------------------------------------------------
+clustering:
+  n_neighbors: 15
+  umap_min_dist: 0.3
+  leiden_resolution: 0.5
+  n_pcs: 30
+
+# ---------------------------------------------------------------------------
+# Results / Reporting
+# ---------------------------------------------------------------------------
+output:
+  results_dir: "results"
+  save_model: true
+  save_latent: true
+  figure_dpi: 150
+  figure_format: "pdf"

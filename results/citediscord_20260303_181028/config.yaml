@@ -1,0 +1,90 @@
+cell_communication:
+  expr_threshold_percentile: 10
+  gat:
+    enabled: true
+    hid_dim: 16
+    k_neighbors: 15
+    n_heads: 4
+    out_dim: 32
+  min_expr_fraction: 0.1
+  n_bootstrap: 500
+clustering:
+  leiden_resolution: 0.5
+  n_neighbors: 15
+  n_pcs: 30
+  umap_min_dist: 0.3
+cvae:
+  batch_size: 256
+  condition_dim: 32
+  dropout: 0.1
+  esm_embed_dim: 320
+  hidden_dims:
+  - 128
+  - 128
+  latent_dim: 32
+  lr: 0.0005
+  n_epochs: 60
+  use_esm_features: true
+data:
+  augmentation_noise_std: 0.05
+  augmented_dir: data/augmented
+  cellphonedb_url: https://raw.githubusercontent.com/Teichlab/cellphonedb-data/master/data/interaction_input.csv
+  max_genes_per_cell: 6000
+  max_mito_fraction: 0.2
+  min_cells_per_gene: 10
+  min_genes_per_cell: 200
+  n_augmented_cells: 3000
+  n_highly_variable_genes: 2000
+  n_pca_components: 50
+  pbmc_url: https://cf.10xgenomics.com/samples/cell-exp/3.0.0/pbmc_10k_protein_v3/pbmc_10k_protein_v3_filtered_feature_bc_matrix.h5
+  processed_dir: data/processed
+  raw_dir: data/raw
+device: auto
+discordance:
+  alpha: 0.05
+  min_corr_cells: 20
+  n_permutations: 1000
+llm:
+  batch_size: 8
+  cache_dir: data/processed/esm2_cache
+  max_length: 512
+  model_name: facebook/esm2_t6_8M_UR50D
+mvae:
+  adt_hidden_dims:
+  - 64
+  - 64
+  adt_input_dim: 17
+  batch_norm: true
+  batch_size: 512
+  beta: 4.0
+  cmat:
+    enabled: true
+    n_heads: 4
+  decoder_hidden_dims:
+  - 256
+  - 512
+  dropout: 0.1
+  grad_clip: 1.0
+  infonce_temperature: 0.07
+  lambda_nce: 0.1
+  latent_dim: 32
+  lr: 0.001
+  mog_components: 10
+  n_epochs: 80
+  proj_dim: 64
+  rna_hidden_dims:
+  - 512
+  - 256
+  rna_input_dim: 2000
+  scheduler: cosine
+  use_mog_prior: true
+  warmup_epochs: 10
+  weight_decay: 1.0e-05
+output:
+  figure_dpi: 150
+  figure_format: pdf
+  results_dir: results
+  save_latent: true
+  save_model: true
+project_name: CITEDiscord-Net
+seed: 42

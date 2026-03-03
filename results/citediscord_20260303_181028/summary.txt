@@ -1,0 +1,22 @@
+======================================================================
+  CITEDiscord-Net — Run Summary
+======================================================================
+  Real cells:            8000
+  Augmented cells:       3000
+  HVGs:                  2000
+  Proteins (ADT):        17
+  ESM-2 embed dim:       320
+  Leiden clusters:       6
+
+  MVAE final loss:       2.1193
+  MVAE KL:               0.0161
+  CVAE final loss:       1.0207
+  Silhouette score:      0.10659371316432953
+  Protein pred Spearman: 0.4534972496195386
+
+  Discordant LR pairs:   2167
+  Mean discord score:    0.2934
+  Sig. cell comm. pairs: 0
+
+  Total time:            91s
+======================================================================

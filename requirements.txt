@@ -1,0 +1,34 @@
+# =============================================================================
+# Project 09 — CITEDiscord-Net
+# Single-Cell Multi-Modal CITE-Seq Integration: Discordance Analysis &
+# Cell Communication Inference with LLM-Augmented Protein Embeddings
+# =============================================================================
+torch
+torchvision
+torchaudio
+transformers
+accelerate
+numpy
+scipy
+pandas
+scikit-learn
+matplotlib
+seaborn
+plotly
+kaleido
+tqdm
+pyyaml
+requests
+h5py
+anndata
+scanpy
+muon
+leidenalg
+igraph
+umap-learn
+statsmodels
+pylatex
+Jinja2
+tabulate
+optuna
+networkx

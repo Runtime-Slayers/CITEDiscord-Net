@@ -1,0 +1,17 @@
+{
+  "mvae_final_loss": 2.119264318829491,
+  "mvae_final_kl": 0.016112451752026875,
+  "mvae_final_recon": 2.03533220858801,
+  "cvae_final_loss": 1.0206809909112993,
+  "silhouette_score": 0.10659371316432953,
+  "protein_pred_spearman_r": 0.4534972496195386,
+  "n_discordant_pairs": 2167,
+  "mean_discord_score": 0.2934401035308838,
+  "n_significant_interactions": 0,
+  "n_real_cells": 8000,
+  "n_augmented_cells": 3000,
+  "n_clusters": 6,
+  "n_proteins": 17,
+  "n_hvg": 2000,
+  "esm2_embed_dim": 320
+}
